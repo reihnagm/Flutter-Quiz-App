@@ -28,157 +28,69 @@ class _MyHomePageState extends State<MyHomePage> {
 
   int nilai = 0;
 
+  List value = [];
+  bool isloading = false;
   String selectedSoal1;
   String selectedSoal2;
- 
-  List<Map<String, dynamic>> answered = [];
   
-  @override
-  Widget build(BuildContext context) {
-
-    List<Map<dynamic, dynamic>> questions = [
+  List<Map<dynamic, dynamic>> questions = [
     {
       0: {
         "question": "1 + 1 ?",
         "answers":[
-
-          RadioListTile(
-            value: "A. 2",
-            groupValue: selectedSoal1,
-            controlAffinity: ListTileControlAffinity.leading,
-            onChanged: (val) {
-              setState(() {
-                selectedSoal1 = val;
-                answered.add({
-                  "id": 00, 
-                  "answered": true
-                });
-              });
-            },
-            title: Text("A. 2",
-              style: TextStyle(fontSize: 14.0),
-            ),
-          ),
-          RadioListTile(
-            value: "B. 3",
-            groupValue: selectedSoal1,
-            controlAffinity: ListTileControlAffinity.leading,
-            onChanged: (val) {
-             setState(() {
-                selectedSoal1 = val;
-                answered.add({
-                  "id": 01, 
-                  "answered": false
-                });
-              });
-            },
-            title: Text("B. 3",
-              style: TextStyle(fontSize: 14.0),
-            ),
-          ),
-          RadioListTile(
-            value: "C. 19",
-            groupValue: selectedSoal1,
-            controlAffinity: ListTileControlAffinity.leading,
-            onChanged: (val) {
-             setState(() {
-                selectedSoal1 = val;
-                answered.add({
-                  "id": 02, 
-                  "answered": true
-                });
-              });
-            },
-            title: Text("C. 19",
-              style: TextStyle(fontSize: 14.0),
-            ),
-          ) 
-
+          {
+            "title": "A. 2",
+            "isanswer": true,
+          },
+          {
+            "title": "B. 3",
+            "isanswer": false,
+          },
+          {
+            "title": "C. 5",
+            "isanswer": false
+          }
         ]
       },
     }, 
-    // {
-    //   1: {
-    //     "question": "tag link untuk html adalah ?",
-    //     "answers":[
-
-    //       RadioListTile(
-    //         value: "A. div",
-    //         groupValue: selectedSoal2,
-    //         controlAffinity: ListTileControlAffinity.leading,
-    //         onChanged: (val) {
-    //           setState(() {
-    //             selectedSoal2 = val;
-    //             answered.add({
-    //               "id": 10, 
-    //               "answered": false
-    //             });
-    //           });
-    //         },
-    //         title: Text("A. div",
-    //           style: TextStyle(fontSize: 14.0),
-    //         ),
-    //       ),
-    //       RadioListTile(
-    //         value: "B. a=href",
-    //         groupValue: selectedSoal2,
-    //         controlAffinity: ListTileControlAffinity.leading,
-    //         onChanged: (val) {
-    //           setState(() {
-    //             selectedSoal2 = val;
-    //             answered.add({
-    //               "id": 11, 
-    //               "answered": true
-    //             });
-    //           });
-    //         },
-    //         title: Text("B. a href",
-    //           style: TextStyle(fontSize: 14.0),
-    //         ),
-    //       ),
-    //       RadioListTile(
-    //         value: "C. p",
-    //         groupValue: selectedSoal2,
-    //         controlAffinity: ListTileControlAffinity.leading,
-    //         onChanged: (val) {
-    //           setState(() {
-    //             selectedSoal2 = val;
-    //             answered.add({
-    //               "id": 12, 
-    //               "answered": false
-    //             });
-    //           });
-    //         },
-    //         title: Text("C. p",
-    //           style: TextStyle(fontSize: 14.0),
-    //         ),
-    //       )  
-
-    //     ]
-    //   }
-    // },
-    // {
-    //   2: {
-    //     "question": "Windows 10 rilis tahun ?",
-    //     "answers":[
-    //       {
-    //         "title": "A. 2015",
-    //         "isanswer": true,
-    //         "selected": false
-    //       },
-    //       {
-    //         "title": "B. 2012",
-    //         "isanswer": false,
-    //         "selected": false
-    //       },
-    //       {
-    //         "title": "C. 2009",
-    //         "isanswer": false,
-    //         "selected": false
-    //       }
-    //     ]
-    //   }
-    // },
+    {
+      1: {
+        "question": "tag link untuk html adalah ?",
+        "answers":[
+          {
+            "title": "A. div",
+            "isanswer": false
+          },
+          {
+            "title": "B. a=href",
+            "isanswer": true
+          },
+          {
+            "title": "C. p",
+            "isanswer": false
+          } 
+        ]
+      }
+    },
+    {
+      2: {
+        "question": "Windows 10 rilis tahun ?",
+        "answers":[
+          {
+            "title": "A. 2015",
+            "isanswer": true,
+          },
+          {
+            "title": "B. 2012",
+            "isanswer": false,
+          },
+          {
+            "title": "C. 2009",
+            "isanswer": false,
+          }
+        ]
+      }
+    },
     // {
     //   3: {
     //     "question": "Youtube rilis ?",
@@ -334,6 +246,24 @@ class _MyHomePageState extends State<MyHomePage> {
     //   }
     // },
   ];
+  List<Map<String, dynamic>> answered = [];
+
+  @override
+  void initState() {
+    super.initState();
+    isloading = true;    
+    Future.delayed(Duration.zero, () {
+      for (int i = 0; i < questions.length; i++) {
+        setState(() {
+          value.add(null);
+        }); 
+      }
+    });
+    isloading = false;
+  }
+  
+  @override
+  Widget build(BuildContext context) {
 
     return Scaffold(
       appBar: AppBar(
@@ -345,8 +275,9 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: ListView(
         children: [
-          
-          ListView.builder(
+          isloading 
+          ? Container()
+          : ListView.builder(
             shrinkWrap: true,
             physics: BouncingScrollPhysics(),
             itemCount: questions.length,
@@ -360,7 +291,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(" ${i + 1}. ${questions[i][i]["question"].toString()}"),
+                        Text("${i + 1}. ${questions[i][i]["question"].toString()}"),
                         SizedBox(height: 8.0),
                         ListView.builder(
                           physics: NeverScrollableScrollPhysics(),
@@ -370,7 +301,21 @@ class _MyHomePageState extends State<MyHomePage> {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                questions[i][i]["answers"][z]
+                                RadioListTile(
+                                  value: int.parse("$i$z"),
+                                  groupValue: value[i],
+                                  controlAffinity: ListTileControlAffinity.leading,
+                                  onChanged: (index) {
+                                    setState(() => value[i]= index);
+                                    answered.add({
+                                      "id": int.parse("$i$z"), 
+                                      "answered": questions[i][i]["answers"][z]["isanswer"]
+                                    });
+                                  },  
+                                  title: Text(questions[i][i]["answers"][z]["title"],
+                                    style: TextStyle(fontSize: 14.0),
+                                  ),
+                                ),
                               ],
                             );
                           },
