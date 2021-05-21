@@ -1,4 +1,7 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
+import 'package:project_aan/enum.dart';
 
 void main() {
   runApp(MyApp());
@@ -8,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "Soal Pilihan Ganda",
+      title: "Soal Pilihan",
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -27,11 +30,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 
   int nilai = 0;
-
   List value = [];
   bool isloading = false;
-  String selectedSoal1;
-  String selectedSoal2;
   
   List<Map<dynamic, dynamic>> questions = [
     {
@@ -72,25 +72,25 @@ class _MyHomePageState extends State<MyHomePage> {
         ]
       }
     },
-    {
-      2: {
-        "question": "Windows 10 rilis tahun ?",
-        "answers":[
-          {
-            "title": "A. 2015",
-            "isanswer": true,
-          },
-          {
-            "title": "B. 2012",
-            "isanswer": false,
-          },
-          {
-            "title": "C. 2009",
-            "isanswer": false,
-          }
-        ]
-      }
-    },
+    // {
+    //   2: {
+    //     "question": "Windows 10 rilis tahun ?",
+    //     "answers":[
+    //       {
+    //         "title": "A. 2015",
+    //         "isanswer": true,
+    //       },
+    //       {
+    //         "title": "B. 2012",
+    //         "isanswer": false,
+    //       },
+    //       {
+    //         "title": "C. 2009",
+    //         "isanswer": false,
+    //       }
+    //     ]
+    //   }
+    // },
     // {
     //   3: {
     //     "question": "Youtube rilis ?",
@@ -98,17 +98,14 @@ class _MyHomePageState extends State<MyHomePage> {
     //       {
     //         "title": "A. 2003",
     //         "isanswer": false, 
-    //         "selected": false
     //       },
     //       {
     //         "title": "B. 2005",
     //         "isanswer": true,
-    //         "selected": false
     //       },
     //       {
     //         "title": "C. 2004",
     //         "isanswer": false,
-    //         "selected": false
     //       }
     //     ]
     //   }
@@ -120,17 +117,14 @@ class _MyHomePageState extends State<MyHomePage> {
     //       {
     //         "title": "A. 1998",
     //         "isanswer": false, 
-    //         "selected": false
     //       },
     //       {
     //         "title": "B. 2000",
     //         "isanswer": false,
-    //         "selected": false
     //       },
     //       {
     //         "title": "C. 2004",
     //         "isanswer": true,
-    //         "selected": false
     //       }
     //     ]
     //   }
@@ -142,17 +136,14 @@ class _MyHomePageState extends State<MyHomePage> {
     //       {
     //         "title": "A. 1998",
     //         "isanswer": false, 
-    //         "selected": false
     //       },
     //       {
     //         "title": "B. 2000",
     //         "isanswer": false,
-    //         "selected": false
     //       },
     //       {
     //         "title": "C. 1994",
     //         "isanswer": true,
-    //         "selected": false
     //       }
     //     ]
     //   }
@@ -164,17 +155,14 @@ class _MyHomePageState extends State<MyHomePage> {
     //       {
     //         "title": "A. 2008",
     //         "isanswer": true, 
-    //         "selected": false
     //       },
     //       {
     //         "title": "B. 2009",
     //         "isanswer": false,
-    //         "selected": false
     //       },
     //       {
     //         "title": "C. 2000",
     //         "isanswer": false,
-    //         "selected": false
     //       }
     //     ]
     //   }
@@ -186,17 +174,14 @@ class _MyHomePageState extends State<MyHomePage> {
     //       {
     //         "title": "A. 10 Oktober 2010",
     //         "isanswer": true, 
-    //         "selected": false
     //       },
     //       {
     //         "title": "B. 11 Oktober 2008",
     //         "isanswer": false,
-    //         "selected": false
     //       },
     //       {
     //         "title": "C. 24 Oktober 2009",
     //         "isanswer": false,
-    //         "selected": false
     //       }
     //     ]
     //   }
@@ -208,17 +193,14 @@ class _MyHomePageState extends State<MyHomePage> {
     //       {
     //         "title": "A. 1995",
     //         "isanswer": true, 
-    //         "selected": false
     //       },
     //       {
     //         "title": "B. 2000",
     //         "isanswer": false,
-    //         "selected": false
     //       },
     //       {
     //         "title": "C. 1990",
     //         "isanswer": false,
-    //         "selected": false
     //       }
     //     ]
     //   }
@@ -230,17 +212,14 @@ class _MyHomePageState extends State<MyHomePage> {
     //       {
     //         "title": "A. Mark Zuckerberg",
     //         "isanswer": true, 
-    //         "selected": false
     //       },
     //       {
     //         "title": "B. Elliot Yamin",
     //         "isanswer": false,
-    //         "selected": false
     //       },
     //       {
     //         "title": "C. Bill Gates",
     //         "isanswer": false,
-    //         "selected": false
     //       }
     //     ]
     //   }
@@ -267,7 +246,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Soal Pilihan Ganda",
+        title: Text("Soal Pilihan",
           style: TextStyle(
             fontSize: 17.0
           ),
@@ -306,11 +285,16 @@ class _MyHomePageState extends State<MyHomePage> {
                                   groupValue: value[i],
                                   controlAffinity: ListTileControlAffinity.leading,
                                   onChanged: (index) {
-                                    setState(() => value[i]= index);
+                                    setState(() { 
+                                      value[i]= index;
+                                    });
+                                    
+                                   
                                     answered.add({
-                                      "id": int.parse("$i$z"), 
+                                      "id": "$i$z", 
                                       "answered": questions[i][i]["answers"][z]["isanswer"]
                                     });
+                                    print(answered.where((el) => el["id"] != "$i$z").toSet().toList());
                                   },  
                                   title: Text(questions[i][i]["answers"][z]["title"],
                                     style: TextStyle(fontSize: 14.0),
@@ -332,11 +316,81 @@ class _MyHomePageState extends State<MyHomePage> {
             margin: EdgeInsets.all(10.0),
             child: ElevatedButton(
               onPressed: () {
-                List<Map<String, dynamic>> list = answered.where((item) => Set().add(item["id"])).toList();
-                int _nilai = list.where((el) => el["answered"] == true).length;
-                setState(() => nilai = _nilai);
+                print(answered.where((el) => Set().add(el["id"])).toSet().toList());
+                int falseAnswer = answered.where((el) => el["answered"] == false).toSet().length;
+                // print(falseAnswer);
+                int trueAnswer = answered.where((el) => el["answered"] == true).length;
+                String point = (answered.where((el) => el["answered"] == true).length / questions.length * 100).toStringAsFixed(0);
+                showModalBottomSheet(
+                  context: context, 
+                  builder: (BuildContext context) {
+                    return Container(
+                      height: 250.0,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          if(int.parse(point) < 70)
+                            Container(
+                              child: Text("Anda tidak LULUS",
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                  color: Colors.red
+                                ),
+                              ),
+                            ),
+                          if(int.parse(point) >= 70)
+                            Container(
+                              child: Text("Anda LULUS",
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                  color: Colors.green
+                                ),
+                              ),
+                            ),
+                          SizedBox(height: 10.0),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                child: Text("Nilai Anda : "),
+                              ),
+                              // Container(
+                              //   child: Text(point)
+                              // )
+                            ],
+                          ),
+                          SizedBox(height: 8.0),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                child: Text("Jawaban Anda yang benar : "),
+                              ),
+                              // Container(
+                              //   child: Text(trueAnswer.toString())
+                              // )
+                            ],
+                          ),
+                          SizedBox(height: 8.0),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                child: Text("Jawaban Anda yang salah : "),
+                              ),
+                              // Container(
+                              //   child: Text(falseAnswer.toString())
+                              // )
+                            ],
+                          )
+                        ],
+                      ),
+                    );
+                  } 
+                );
               },
-              child: Text("Proccess"),  
+              child: Text("Submit"),  
             ),
           ),
           
