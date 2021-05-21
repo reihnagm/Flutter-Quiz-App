@@ -39,14 +39,17 @@ class _MyHomePageState extends State<MyHomePage> {
         "question": "1 + 1 ?",
         "answers":[
           {
+            "id": 01,
             "title": "A. 2",
             "isanswer": true,
           },
           {
+            "id": 02,
             "title": "B. 3",
             "isanswer": false,
           },
           {
+            "id": 03,
             "title": "C. 5",
             "isanswer": false
           }
@@ -58,14 +61,17 @@ class _MyHomePageState extends State<MyHomePage> {
         "question": "tag link untuk html adalah ?",
         "answers":[
           {
+            "id": 11,
             "title": "A. div",
             "isanswer": false
           },
           {
+            "id": 12,
             "title": "B. a=href",
             "isanswer": true
           },
           {
+            "id": 13,
             "title": "C. p",
             "isanswer": false
           } 
@@ -225,6 +231,7 @@ class _MyHomePageState extends State<MyHomePage> {
     //   }
     // },
   ];
+  
   List<Map<String, dynamic>> answered = [];
 
   @override
@@ -289,12 +296,11 @@ class _MyHomePageState extends State<MyHomePage> {
                                       value[i]= index;
                                     });
                                     
-                                   
+                                    
                                     answered.add({
-                                      "id": "$i$z", 
+                                      "id": questions[i][i]["answers"][z]["id"], 
                                       "answered": questions[i][i]["answers"][z]["isanswer"]
-                                    });
-                                    print(answered.where((el) => el["id"] != "$i$z").toSet().toList());
+                                    });     
                                   },  
                                   title: Text(questions[i][i]["answers"][z]["title"],
                                     style: TextStyle(fontSize: 14.0),
@@ -316,10 +322,11 @@ class _MyHomePageState extends State<MyHomePage> {
             margin: EdgeInsets.all(10.0),
             child: ElevatedButton(
               onPressed: () {
-                print(answered.where((el) => Set().add(el["id"])).toSet().toList());
-                int falseAnswer = answered.where((el) => el["answered"] == false).toSet().length;
-                // print(falseAnswer);
-                int trueAnswer = answered.where((el) => el["answered"] == true).length;
+                
+                print(answered);
+                // int falseAnswer = answered.where((el) => el["answered"] == false).toSet().length;
+                // // print(falseAnswer);
+                // int trueAnswer = answered.where((el) => el["answered"] == true).length;
                 String point = (answered.where((el) => el["answered"] == true).length / questions.length * 100).toStringAsFixed(0);
                 showModalBottomSheet(
                   context: context, 
