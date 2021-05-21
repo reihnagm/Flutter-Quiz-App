@@ -1,4 +1,5 @@
-import 'dart:collection';
+
+import 'package:collection/collection.dart';
 
 import 'package:flutter/material.dart';
 import 'package:project_aan/enum.dart';
@@ -40,16 +41,19 @@ class _MyHomePageState extends State<MyHomePage> {
         "answers":[
           {
             "id": 01,
+            "sign": 1,
             "title": "A. 2",
             "isanswer": true,
           },
           {
             "id": 02,
+            "sign": 1,
             "title": "B. 3",
             "isanswer": false,
           },
           {
             "id": 03,
+            "sign": 1,
             "title": "C. 5",
             "isanswer": false
           }
@@ -62,16 +66,19 @@ class _MyHomePageState extends State<MyHomePage> {
         "answers":[
           {
             "id": 11,
+            "sign": 2,
             "title": "A. div",
             "isanswer": false
           },
           {
             "id": 12,
+            "sign": 2,
             "title": "B. a=href",
             "isanswer": true
           },
           {
             "id": 13,
+            "sign": 2,
             "title": "C. p",
             "isanswer": false
           } 
@@ -292,15 +299,22 @@ class _MyHomePageState extends State<MyHomePage> {
                                   groupValue: value[i],
                                   controlAffinity: ListTileControlAffinity.leading,
                                   onChanged: (index) {
-                                    setState(() { 
-                                      value[i]= index;
-                                    });
-                                    
-                                    
+                                    setState(() => value[i]= index);   
+                                                         
                                     answered.add({
                                       "id": questions[i][i]["answers"][z]["id"], 
+                                      "sign": questions[i][i]["answers"][z]["sign"],
                                       "answered": questions[i][i]["answers"][z]["isanswer"]
                                     });     
+
+                                    Map<dynamic, dynamic> mp = {};
+                                    for (var item in answered) {
+                                      mp[item["sign"]] = item;
+                                    }
+                                    
+                                    var filteredList = mp.values.toList();
+                                    print(filteredList);
+                                    // print(answered.where((el) => Set().add(el["sign"])).toList());
                                   },  
                                   title: Text(questions[i][i]["answers"][z]["title"],
                                     style: TextStyle(fontSize: 14.0),
@@ -322,10 +336,11 @@ class _MyHomePageState extends State<MyHomePage> {
             margin: EdgeInsets.all(10.0),
             child: ElevatedButton(
               onPressed: () {
+                // var test = groupBy(answered, (obj) => obj['sign']);
+              
                 
-                print(answered);
+                // print(answered.map((o) => o["answered"]).toSet());
                 // int falseAnswer = answered.where((el) => el["answered"] == false).toSet().length;
-                // // print(falseAnswer);
                 // int trueAnswer = answered.where((el) => el["answered"] == true).length;
                 String point = (answered.where((el) => el["answered"] == true).length / questions.length * 100).toStringAsFixed(0);
                 showModalBottomSheet(
