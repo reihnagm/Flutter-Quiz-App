@@ -1,5 +1,5 @@
 
-import 'package:collection/collection.dart';
+// import 'package:collection/collection.dart';
 
 import 'package:flutter/material.dart';
 import 'package:project_aan/enum.dart';
@@ -307,13 +307,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                       "answered": questions[i][i]["answers"][z]["isanswer"]
                                     });     
 
-                                    Map<dynamic, dynamic> mp = {};
-                                    for (var item in answered) {
-                                      mp[item["sign"]] = item;
-                                    }
-                                    
-                                    var filteredList = mp.values.toList();
-                                    print(filteredList);
                                     // print(answered.where((el) => Set().add(el["sign"])).toList());
                                   },  
                                   title: Text(questions[i][i]["answers"][z]["title"],
@@ -336,13 +329,15 @@ class _MyHomePageState extends State<MyHomePage> {
             margin: EdgeInsets.all(10.0),
             child: ElevatedButton(
               onPressed: () {
-                // var test = groupBy(answered, (obj) => obj['sign']);
-              
-                
-                // print(answered.map((o) => o["answered"]).toSet());
-                // int falseAnswer = answered.where((el) => el["answered"] == false).toSet().length;
-                // int trueAnswer = answered.where((el) => el["answered"] == true).length;
-                String point = (answered.where((el) => el["answered"] == true).length / questions.length * 100).toStringAsFixed(0);
+                // groupBy(answered, (obj) => obj['sign']);
+                Map<dynamic, dynamic> mp = {};
+                for (var item in answered) {
+                  mp[item["sign"]] = item;
+                }
+                var filteredList = mp.values.toList();
+                int falseAnswer = filteredList.where((el) => el["answered"] == false).toSet().length;
+                int trueAnswer = filteredList.where((el) => el["answered"] == true).length;
+                String point = (filteredList.where((el) => el["answered"] == true).length / questions.length * 100).toStringAsFixed(0);
                 showModalBottomSheet(
                   context: context, 
                   builder: (BuildContext context) {
@@ -377,9 +372,9 @@ class _MyHomePageState extends State<MyHomePage> {
                               Container(
                                 child: Text("Nilai Anda : "),
                               ),
-                              // Container(
-                              //   child: Text(point)
-                              // )
+                              Container(
+                                child: Text(point)
+                              )
                             ],
                           ),
                           SizedBox(height: 8.0),
@@ -389,9 +384,9 @@ class _MyHomePageState extends State<MyHomePage> {
                               Container(
                                 child: Text("Jawaban Anda yang benar : "),
                               ),
-                              // Container(
-                              //   child: Text(trueAnswer.toString())
-                              // )
+                              Container(
+                                child: Text(trueAnswer.toString())
+                              )
                             ],
                           ),
                           SizedBox(height: 8.0),
@@ -401,9 +396,9 @@ class _MyHomePageState extends State<MyHomePage> {
                               Container(
                                 child: Text("Jawaban Anda yang salah : "),
                               ),
-                              // Container(
-                              //   child: Text(falseAnswer.toString())
-                              // )
+                              Container(
+                                child: Text(falseAnswer.toString())
+                              )
                             ],
                           )
                         ],
